@@ -1,243 +1,190 @@
-[![Fork Button](https://img.shields.io/github/forks/iemafzalhassan/full-stack_chatApp?style=social)](https://github.com/iemafzalhassan/full-stack_chatApp/fork)
+# 💬 Chattyply
 
+> **Real-time chat — beautifully crafted.**
 
-# Real-Time Chat Application
+Chattyply is a full-stack real-time messaging application built with the MERN stack and Socket.IO. It features a modern, glassmorphism-inspired UI with 30+ theme options, image sharing, online presence indicators, and seamless Docker deployment.
 
-
-Welcome to the **Full Stack Realtime Chat App** project, where we're building a scalable and secure real-time chat experience using the latest technologies. Whether you're a seasoned developer or a beginner, we invite you to contribute and be a part of this exciting journey!
-
-## Table of Contents
-
-
-* [Introduction](#introduction)
-* [Features](#features)
-* [Tech Stack](#tech-stack)
-* [Getting Started](#getting-started)
-* [Building the Backend](#building-the-backend)
-* [Running the Application](#running-the-application)
-* [Contributing](#contributing)
-* [Future Plans](#future-plans)
-* [License](#license)
-
-## 📝 Introduction
-
-This project aims to provide a real-time chat experience that's both scalable and secure. With a focus on modern technologies, we're building an application that's easy to use and maintain.
+---
 
 ## ✨ Features
 
+- ⚡ **Real-time messaging** powered by Socket.IO
+- 🟢 **Live online/offline presence** indicators
+- 🖼️ **Image sharing** in conversations
+- 🎨 **30+ themes** (dark, light, synthwave, dracula & more via DaisyUI)
+- 🔐 **JWT authentication** with secure HTTP-only cookies
+- 👤 **Profile management** with avatar upload (Cloudinary)
+- 🔍 **Contact search** in the sidebar
+- 📱 **Fully responsive** — works on mobile, tablet, and desktop
+- 🐳 **Docker-ready** — one command to run everything
 
-* **Real-time Messaging**: Send and receive messages instantly using Socket.io 
-* **User Authentication & Authorization**: Securely manage user access with JWT 
-* **Scalable & Secure Architecture**: Built to handle large volumes of traffic and data 
-* **Modern UI Design**: A user-friendly interface crafted with React and TailwindCSS 
-* **Profile Management**: Users can upload and update their profile pictures 
-* **Online Status**: View real-time online/offline status of users 
-
+---
 
 ## 🛠️ Tech Stack
 
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | React 18, Vite, TailwindCSS, DaisyUI |
+| **Backend** | Node.js, Express.js |
+| **Database** | MongoDB (with Mongoose) |
+| **Real-time** | Socket.IO |
+| **Auth** | JWT + bcrypt |
+| **Storage** | Cloudinary (profile images) |
+| **Deployment** | Docker, Docker Compose, Nginx |
 
-* **Backend:** Node.js, Express, MongoDB, Socket.io
-* **Frontend:** React, TailwindCSS
-* **Containerization:** Docker
-* **Orchestration:** Kubernetes (planned)
-* **Web Server:** Nginx
-* **State Management:** Zustand
-* **Authentication:** JWT
-* **Styling Components:** DaisyUI
+---
 
+## 🚀 Quick Start (Docker)
 
-### 🔧 Prerequisites
+### Prerequisites
+- [Docker](https://docs.docker.com/get-docker/) installed and running
+- [Docker Compose plugin](https://docs.docker.com/compose/install/) (v2)
 
+### 1. Clone the repository
+```bash
+git clone https://github.com/YOUR_USERNAME/chattyply.git
+cd chattyply
+```
 
-* **[Node.js](https://nodejs.org/)** (v14 or higher)
-* **[Docker](https://www.docker.com/get-started)** (for containerizing the app)
-* **[Git](https://git-scm.com/downloads)** (to clone the repository)
-
-
-### 📝 Environment Configuration
-
-Create a `.env` file in the root directory with the following configuration:
-
+### 2. Create the environment file
+```bash
+cp .env.example .env
+```
+Edit `.env` with your values:
 ```env
-# Database Configuration
-MONGODB_URI=mongodb://root:admin@mongo:27017/chatApp?authSource=admin&retryWrites=true&w=majority
+# Database
+MONGODB_URI=mongodb://root:admin@mongo:27017/chatApp?authSource=admin
 
-# JWT Configuration
-JWT_SECRET=your_jwt_secret_key
+# Auth
+JWT_SECRET=your_strong_secret_key_here
 
-# Server Configuration
+# Server
 PORT=5001
 NODE_ENV=production
+
+# Cloudinary (for profile picture uploads)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-> **Note:** 
-> - Replace `your_jwt_secret_key` with a strong secret key
-> - For local development without Docker, change `MONGODB_URI` to `mongodb://localhost:27017/chatApp`
-> - You can use command ```echo "Text what you want" | base64
-
-### Clone the Repository
-
+### 3. Build and run
 ```bash
-git clone https://github.com/iemafzalhassan/full-stack_chatApp.git
+docker compose up -d --build
 ```
 
-🏗️ Build and Run the Application
-
-Follow these steps to build and run the application:
-
-1. Build & Run the Containers:
-
-```bash
-cd full-stack_chatApp
+### 4. Open in browser
 ```
-```bash
-docker-compose up -d --build
+http://localhost:8080
 ```
 
-2. Access the application in your browser:
-
-```
-http://localhost
-```
 ---
 
-## 🛠️ Getting Started
+## 🗂️ Project Structure
 
-Follow these simple steps to get the project up and running on your local Host using docker.
-
-```bash
-git clone https://github.com/iemafzalhassan/full-stack_chatApp.git
+```
+chattyply/
+├── frontend/               # React + Vite app
+│   ├── src/
+│   │   ├── components/     # Navbar, Sidebar, ChatContainer, etc.
+│   │   ├── pages/          # Login, Signup, Home, Profile, Settings
+│   │   ├── store/          # Zustand state management
+│   │   └── lib/            # Axios instance, utilities
+│   ├── nginx.conf          # Nginx reverse proxy config
+│   └── Dockerfile
+│
+├── backend/                # Express.js API + Socket.IO server
+│   ├── src/
+│   │   ├── controllers/    # Auth, Message controllers
+│   │   ├── models/         # User, Message schemas
+│   │   ├── routes/         # API routes
+│   │   ├── middleware/      # JWT auth middleware
+│   │   └── lib/            # DB, Socket, Cloudinary, Utils
+│   └── Dockerfile
+│
+├── docker-compose.yml      # Orchestrates frontend + backend + mongo
+└── .env                    # Environment variables (not committed)
 ```
 
-```bash
-cd full-stack_chatApp
-```
-## Create a Docker network:
-
-```bash
-docker network create full-stack
-```
-
-## 🛠️ Building the Frontend
-
-```bash
-cd frontend
-```
-
-```bash
-docker build -t full-stack_frontend .
-```
-
-### Run the Frontend container:
-
-```bash
-docker run -d --network=full-stack  -p 5173:5173 --name frontend full-stack_frontend:latest
-```
-#### The frontend will now be accessible on port 5173.
-
-
-## Run the MongoDB Container:
-
-```bash
-docker run -d -p 27017:27017 --name mongo mongo:latest
-```
 ---
 
-## 🛠️ Building the Backend
+## 🐳 Docker Services
 
+| Service | Port | Description |
+|---------|------|-------------|
+| `frontend` | `8080` | React app served via Nginx |
+| `backend` | `5001` | Express API + Socket.IO |
+| `mongo` | `27017` | MongoDB database |
+
+### Useful Docker commands
+
+```bash
+# Start all services
+docker compose up -d
+
+# Rebuild after code changes
+docker compose up -d --build
+
+# View live logs
+docker compose logs -f
+
+# Stop everything
+docker compose down
+
+# Stop and remove volumes (wipes DB)
+docker compose down -v
+```
+
+---
+
+## 💻 Local Development (without Docker)
+
+### Backend
 ```bash
 cd backend
+npm install
+# Update MONGODB_URI in .env to: mongodb://localhost:27017/chatApp
+npm run dev
 ```
 
-### Build the Backend image:
-
+### Frontend
 ```bash
-docker build -t full-stack_backend .
+cd frontend
+npm install
+npm run dev
 ```
-
-### Run the Backend container:
-
-```bash
-docker run -d --network=full-stack --add-host=host.docker.internal:host-gateway -p 5001:5001 --env-file .env full-stack_backend
-```
-#### This will build and run the backend container, exposing the backendAPI on port 5001.
-
-`Backend API: http://localhost:5001`
-
-### To Verify the conncetion between backend and databse:
-```bash
-docker-compose logs -f
-```
-
-### Once the backend and frontend containers are running, you can access the application in your browser:
-
-`Frontend: http://localhost`
-
-
-You can now interact with the real-time chat app and start messaging!
+Frontend runs on `http://localhost:5173`, backend on `http://localhost:5001`.
 
 ---
 
+## 🔌 API Endpoints
 
+### Auth
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/auth/signup` | Register new user |
+| `POST` | `/api/auth/login` | Login |
+| `POST` | `/api/auth/logout` | Logout |
+| `GET` | `/api/auth/check` | Check auth status |
+| `PUT` | `/api/auth/update-profile` | Update profile picture |
 
-### 🤝 Contributing
-
-
-We welcome contributions from DevOps & Developer of all skill levels! Here's how you can contribute:
-
-**Report bugs:** If you encounter any bugs or issues, please open an issue with detailed information.
-**Suggest features:** Have an idea for a new feature? Open an issue to discuss it with the community.
-**Submit pull requests:** If you have a fix or a feature you'd like to contribute, submit a pull request. Ensure your changes pass any linting or tests, if applicable.
-
-### 🌐 Join the Community
-
-We invite you to join our community of developers and contributors. Let's work together to build an amazing real-time chat application!
-
-* **Star this repository** to show your support
-* **Fork this repository** to contribute to the project
-* **Open an issue** to report bugs or suggest features
-* **Submit a pull request** to contribute code changes
-
-## 🔮 Future Plans
-
-
-This project is evolving, and here are a few exciting things on the horizon:
-
-* [ ] **CI/CD Pipelines:** Implement Continuous Integration and Continuous Deployment pipelines to automate testing and deployment.
-* [ ] **Kubernetes (K8s):** Add Kubernetes manifests for container orchestration to deploy the app on cloud platforms like AWS, GCP, or Azure.
-* [ ] **Feature Expansion:** Add more features like group chats, media sharing, and user status updates.
-* **Stay tuned for updates as we continue to improve and expand this project!**
+### Messages
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/api/messages/users` | Get all users (contacts) |
+| `GET` | `/api/messages/:id` | Get messages with a user |
+| `POST` | `/api/messages/send/:id` | Send a message |
 
 ---
 
-## 📚 Project Snapshots:
+## 🎨 Themes
 
-![Settings](frontend/public/settings.png)
+Chattyply supports **30+ themes** via DaisyUI — switch them in **Settings**:
 
-![chat](frontend/public/chat.png)
+`light` · `dark` · `cupcake` · `synthwave` · `cyberpunk` · `dracula` · `night` · `luxury` · `forest` · `aqua` · and many more!
 
-![logout](/frontend/public/logout.png)
+---
 
-![Login](/frontend/public/login.png)
+## 📄 License
 
-
-
-## 📜 License
-
-
-This project is licensed under the MIT License. See the LICENSE file for more details.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+MIT © [Anonyious](https://github.com/anonyious)

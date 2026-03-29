@@ -20,11 +20,18 @@ const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
+
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((u) => u.trim())
+  : ["http://localhost:5173", "http://localhost:8080"];
+
 app.use(
   cors({
-    origin: process.env.NODE_ENV === "production" 
-      ? ["http://localhost:8080", "http://localhost"] 
-      : "http://localhost:5173",
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Not allowed by CORS"));
+    },
     credentials: true,
   })
 );
@@ -33,13 +40,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/health", healthRoutes);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
-  });
-}
+// Frontend is served by Vercel — no static file serving needed here
 
 server.listen(PORT, () => {
   console.log("server is running on PORT:" + PORT);
